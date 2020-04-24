@@ -1,0 +1,29 @@
+public class Solution {
+    // DO NOT MODIFY THE LIST. IT IS READ ONLY
+    public int canCompleteCircuit(final List<Integer> A, final List<Integer> B) {
+        
+        int diff = 0;
+        int idx = 0;
+        
+        for(int i = 0 ; i < A.size(); i++){
+            diff = diff + A.get(i);
+            diff = diff - B.get(i);
+            
+            if(diff < 0 ){
+                idx = i + 1;
+                diff = 0;
+            }
+        }
+        
+        for(int i = 0 ; i < A.size(); i++){
+            diff = diff + A.get(i);
+            diff = diff - B.get(i);
+            
+            if(diff < 0){
+                return -1;
+            }
+        }
+        
+        return idx;
+    }
+}
