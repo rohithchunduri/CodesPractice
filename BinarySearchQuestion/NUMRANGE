@@ -1,0 +1,90 @@
+public class Solution {
+    
+    long lower;
+    long upper;
+    
+    int binaryLowerBound(long prefixSum[], int i){
+        
+        int n = prefixSum.length;
+        
+        int low = i+1;
+        int high = n-1;
+        int mid = 0;
+        int ans = -1;
+        
+        if(prefixSum[high] - prefixSum[i] < lower){
+            return -1;
+        }
+        
+        while(low <= high){
+            mid = (low + high)/2;
+            long currSum = prefixSum[mid] - prefixSum[i];
+            if(currSum >= lower){
+                high = mid - 1;
+                ans = mid;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        
+        return ans;
+    }
+    
+    int binaryUpperBound(long prefixSum[], int i){
+        
+        int n = prefixSum.length;
+        
+        int low = i+1;
+        int high = n-1;
+        int mid = 0;
+        int ans = -1;
+        
+        if(prefixSum[low] - prefixSum[i] > upper){
+            return -1;
+        }
+        
+        while(low <= high){
+            mid = (low + high)/2;
+            long currSum = prefixSum[mid] - prefixSum[i];
+            if(currSum > upper){
+                high = mid - 1;
+            }
+            else{
+                low = mid + 1;
+                ans = mid;
+            }
+        }
+        
+        return ans;
+    }
+    
+    public long numRange(ArrayList<Integer> A, int B, int C) {
+        
+        lower = (long)B;
+        upper = (long)C;
+        
+        int n = A.size();
+        long prefixSum[] = new long[n+1];
+        prefixSum[0] = 0;
+        for(int i = 0 ; i < n ; i++){
+            prefixSum[i+1] = prefixSum[i] + A.get(i);
+        }
+        
+        int count = 0;
+        for(int i = 0 ; i < n ; i++){
+
+            int currLower = binaryLowerBound(prefixSum, i);
+            int currUpper = binaryUpperBound(prefixSum ,i);
+            
+            
+            if(currLower == -1 || currUpper == -1)
+                continue;
+            
+            count += (currUpper - currLower + 1);
+            
+        }
+        
+        return count;
+    }
+}
