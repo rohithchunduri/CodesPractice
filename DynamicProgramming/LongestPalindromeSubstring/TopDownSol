@@ -1,0 +1,104 @@
+class Solution {
+    
+    String key = "";
+    int maxAns = Integer.MIN_VALUE;
+    HashMap<String, Integer> hMap  = new HashMap<String, Integer>();
+    HashMap<String, Boolean> hMapB = new HashMap<String, Boolean>();
+    int n;
+    
+    int recurse(String s, int i , int j){
+        
+        String currKey = i+"_"+j;
+        System.out.println(currKey);
+        if(hMap.containsKey(currKey)){
+            return hMap.get(currKey);
+        }
+        
+        if(i > j){
+            hMapB.put(currKey, true);
+            hMap.put(currKey, 0);
+            return 0;
+        }
+        
+        if( i == j){
+            hMap.put(currKey, 1);
+            hMapB.put(currKey, true);
+            if(maxAns <= 1){
+                key = currKey;
+                maxAns = 1;
+            }
+            return 1;
+        }
+        
+        if(hMap.containsKey(currKey)){
+            return hMap.get(currKey);
+        }
+        
+        if(i >= n  || j < 0){
+            hMapB.put(currKey, true);
+            hMap.put(currKey, 0);
+            return 0;
+        }
+        
+        int currAns = 0;
+        char chA = s.charAt(i);
+        char chB = s.charAt(j);
+        
+        recurse(s, i, j-1);
+        recurse(s, i+1, j);
+        
+        if(chA == chB){
+            //recurse(s, i+1, j-1);
+            String prevKey = (i+1) + "_" + (j-1);
+            //System.out.println(prevKey);
+            if(i+1 > j -1){
+                currAns += 2;
+            }
+            else if(i+1 == j-1){
+                currAns = 3;
+            }
+            else{
+                if(hMapB.get(prevKey)){
+                    currAns = 2 + hMap.get(prevKey);
+                }
+            }
+        }
+        else{
+            hMapB.put(currKey, false);
+        }
+        
+        if(currAns > maxAns){
+            maxAns = currAns;
+            key = currKey;
+        }
+        
+        if(currAns > 0){
+            hMapB.put(currKey, true);
+        }
+        else{
+            hMapB.put(currKey, false);
+        }
+        
+        hMap.put(currKey, currAns);
+        return currAns;
+    }
+    
+    public String longestPalindrome(String s) {
+        
+        if(s.equals(""))
+            return "";
+        
+        n = s.length();
+        int length = recurse(s, 0, n-1);
+        String[] rangeList = key.split("_");
+        int start = Integer.parseInt(rangeList[0]);
+        int end   = Integer.parseInt(rangeList[1]);
+        
+        String currAns = "";
+       // System.out.print(start + " " + end);
+        for(int i = start ; i <= end; i++){
+            currAns += s.charAt(i);
+        }
+        return currAns;
+    }
+}
