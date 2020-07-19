@@ -1,0 +1,71 @@
+class Solution {
+    
+    String key = "";
+    int maxAns = 0;
+    
+    public String longestPalindrome(String s) {
+        
+        int n = s.length();
+        
+        if(n == 0){
+            return s;
+        }
+        
+        boolean isPalindrome[][] = new boolean[n][n];
+        //Constructs the Palindrome Matrix
+        for(int i = 0 ; i < n; i++){
+            for(int j = 0 ; j < n; j++){
+                isPalindrome[i][j] = false;
+            }
+        }
+        
+        for(int i = 0; i < n ; i++){
+            isPalindrome[i][i] = true;
+            if(maxAns < 1){
+                maxAns = 1;
+                key = i+"_"+i;
+            }
+        }
+        
+        for(int i = 0 ; i < n-1; i++){
+            if(s.charAt(i) == s.charAt(i+1)){
+                isPalindrome[i][i+1] = true;
+                if(maxAns < 2){
+                    maxAns = 2;
+                    key = (i)+"_"+(i+1);
+                }
+            }
+        }
+        
+        for(int l = 3 ; l <= n; l++){
+            for(int i = 0 ; i+l-1 < n ; i++){
+                int j = i+l-1;
+                
+                if(s.charAt(i) == s.charAt(j)){
+                    isPalindrome[i][j] = isPalindrome[i+1][j-1];
+                }
+                else{
+                    isPalindrome[i][j] = false;
+                }
+                
+                if(isPalindrome[i][j] == true){
+                    if(l > maxAns){
+                        key = i+"_"+j;
+                    }
+                }
+            }
+        }
+        
+        String[] rangeList = key.split("_");
+        int start = Integer.parseInt(rangeList[0]);
+        int end   = Integer.parseInt(rangeList[1]);
+        
+        String currAns = "";
+       // System.out.print(start + " " + end);
+        for(int i = start ; i <= end; i++){
+            currAns += s.charAt(i);
+        }
+        
+        return currAns;
+    }
+}
