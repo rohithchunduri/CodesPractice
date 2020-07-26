@@ -11,23 +11,22 @@ Adjacent cells are those cells that share a side with the current cell.
 
 public class Solution {
     
+    int rows[] = new int[]{-1, 0, 0 , 1};
+    int cols[] = new int[]{0, -1, 1, 0};
+    
     class Node{
-        
-        int idx;
         int src;
         int dest;
         int wt;
-        boolean added = false;
         
-        Node(int idx, int src, int dest, int wt){
-            this.idx = idx;
+        Node(int src, int dest, int wt){
             this.src = src;
             this.dest = dest;
             this.wt  = wt;
         }
         
         public String toString(){
-            return idx + " " + src + " " + dest + " " + wt + " ";
+            return src + " " + dest + " " + wt + " ";
         }
         
         public int getWeight(){
@@ -61,85 +60,70 @@ public class Solution {
         }
     }
     
-    public ArrayList<Integer> solve(int A, ArrayList<ArrayList<Integer>> B) {
+    
+    public int solve(int A, int B, ArrayList<ArrayList<Integer>> C) {
         
-        ArrayList<Integer> ans = new ArrayList<Integer>();
-        int n = B.size();
-        int parentArr[] = new int[A];
-        int sizeArr[]   = new int[A];
-        int ansArr[]    = new int[n];
+        ArrayList<Node> arrNodes = new ArrayList<Node>();
+        
+        int parentArr[] = new int[A*B];
+        int sizeArr[]   = new int[A*B];
+        HashSet<Integer> allNodes = new HashSet<Integer>();
         
         Arrays.fill(sizeArr, 1);
-        Arrays.fill(ansArr, 0);
         
-        
-        for(int i = 0 ; i < A; i++){
+        for(int i = 0 ; i < A*B; i++){
             parentArr[i] = i;
         }
         
-        ArrayList<Node> arrNodes = new ArrayList<Node>();
-        for(int i = 0 ; i < n ; i++){
-            ArrayList<Integer> currList = B.get(i);
-            int src  = currList.get(0);
-            int dest = currList.get(1);
-            int wt   = currList.get(2);
-            arrNodes.add(new Node(i, src, dest, wt));
+        for(int i = 0 ; i < A; i++){
+            for(int j = 0 ; j < B; j++){
+                
+                for(int k = 0 ; k < 4 ; k++){
+                    
+                    int nextRow = i + rows[k];
+                    int nextCol = j + cols[k];
+                    
+                    if((nextRow >= 0 && nextRow < A) && (nextCol >=0 && nextCol < B)){
+                        
+                        int src  =  i*B + j;
+                        int dest =  nextRow*B + nextCol;
+                        
+                        int currWt = Math.abs(C.get(i).get(j) - C.get(nextRow).get(nextCol));
+                        Node currNode = new Node(src, dest, currWt);
+                        arrNodes.add(currNode);
+                    }
+                }
+            }
         }
         
+        int ans = 0;
         Collections.sort(arrNodes, Comparator.comparing(Node::getWeight));
-        TreeMap<Integer, ArrayList<Node>> mapNodes = new TreeMap<Integer, ArrayList<Node>>();
         
         for(Node currNode : arrNodes){
-            int currWeight = currNode.getWeight();
-            if(mapNodes.containsKey(currWeight)){
-                mapNodes.get(currWeight).add(currNode);
-            }
-            else{
-                ArrayList<Node> currList = new ArrayList<Node>();
-                currList.add(currNode);
-                mapNodes.put(currWeight, currList);
-            }
-        }
-        
-        //System.out.print(mapNodes + " ");
-        
-        for(Map.Entry<Integer, ArrayList<Node>> entry: mapNodes.entrySet()){
             
-            ArrayList<Node> currNodes = entry.getValue();
+            int currSrc = currNode.src;
+            int destSrc = currNode.dest;
             
-            for(Node currNode : currNodes){
+            int srcPar = find(currSrc, parentArr);
+            int destPar = find(destSrc, parentArr);
+            
+            if(srcPar != destPar){
+                union(srcPar, destPar, parentArr, sizeArr);
+                allNodes.add(currSrc);
+                allNodes.add(destSrc);
                 
-                int currSrc = currNode.src  - 1;
-                int destSrc = currNode.dest - 1;
-            
-                int srcPar = find(currSrc, parentArr);
-                int destPar = find(destSrc, parentArr);
-                
-                if(srcPar != destPar){
-                    ansArr[currNode.idx] = 1;
+                if(allNodes.size() == A*B){
+                   int srcPar1 = find(currSrc, parentArr);
+                   int srcPar2 = find(destSrc, parentArr);
+                   if((sizeArr[srcPar1] == A*B) || (sizeArr[srcPar2] == A*B)){
+                       ans = currNode.wt; 
+                       break;
+                   }
                 }
             }
-            
-            for(Node currNode : currNodes){
-                
-                int currSrc = currNode.src  - 1;
-                int destSrc = currNode.dest - 1;
-            
-                int srcPar = find(currSrc, parentArr);
-                int destPar = find(destSrc, parentArr);
-                
-                if(srcPar != destPar){
-                   union(srcPar, destPar, parentArr, sizeArr);
-                }
-            }
-        }
-
-        for(int i : ansArr){
-            System.out.print(i + " ");
         }
         
         return ans;
     }
 }
-
 
