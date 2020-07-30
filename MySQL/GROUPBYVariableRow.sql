@@ -1,3 +1,7 @@
+/*
+This Query creates a new Row for Each Query based on a variable, and then sorts based on the row number .
+*/
+
 SET @row := 0;
 select newOrders.order_id, newOrders.dish_name, newOrders.order_qty
 from(
