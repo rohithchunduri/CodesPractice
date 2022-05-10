@@ -27,13 +27,14 @@ class Solution {
     
     ArrayList<List<Integer>> ans = new ArrayList<List<Integer>>();
     
-    void recurse(boolean arr[], int value, int k, Stack<Integer> stk, int start) {
+    void recurse(int value, int k, Stack<Integer> stk, int start) {
+        
         if (value == 0 && k == 0) {
             ArrayList<Integer> arrList = new ArrayList<Integer>();
             Iterator itr = stk.iterator();
-            while (itr.hasNext()) {
+            while (itr.hasNext())
                 arrList.add((Integer)itr.next());
-            }
+            
             ans.add(arrList);
             return;
         }
@@ -41,21 +42,15 @@ class Solution {
         if (value < 0 || k == 0)
             return;
         
-        for (int i = start ; i < arr.length; i++) {
-            if (arr[i] == true) {                 
-                arr[i] = false;
+        for (int i = start ; i < 9; i++) {               
                 stk.push(i+1);
-                recurse(arr, value - (i + 1), k -1 , stk, i);
+                recurse(value - (i + 1), k -1 , stk, i + 1);
                 stk.pop();
-                arr[i] = true;
-            }
         }
     }
     
     public List<List<Integer>> combinationSum3(int k, int n) {
-        boolean values[] = new boolean[9];
-        Arrays.fill(values, true);
-        recurse(values, n, k, new Stack(), 0);
+        recurse(n, k, new Stack(), 0);
         return ans;
     }
 }
