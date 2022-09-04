@@ -1,3 +1,3 @@
 Dynamic Programming Problems Md
 
-0/1 Knapsack
+1. 0/1 Knapsack
