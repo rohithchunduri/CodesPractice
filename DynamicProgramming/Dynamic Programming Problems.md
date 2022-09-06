@@ -15,3 +15,11 @@ Dynamic Programming Problems Md
     3. Min Coin Change
     4. Maximum Ribbon Cut (Be careful with base cases)
 
+3. Fibonacci Series
+  Variants
+    1. Staircase (number of ways to reach a staircase of height, given he can jump 1, 2, 3 steps at a time)
+    2. Number of factors (given list of numbers, find ways to get sum equal to that number)
+    3. Minimum number of steps to reach (based on bottom up approach)
+    4. Minimum jumps with fee
+    5. House theif
+   
