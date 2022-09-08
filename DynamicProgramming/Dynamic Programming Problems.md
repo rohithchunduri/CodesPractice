@@ -23,3 +23,20 @@ Dynamic Programming Problems Md
     4. Minimum jumps with fee
     5. House theif
    
+4. Subsequence Problems 
+  Variants
+    1. Longest Palindromic Subsequence.
+    2. Longest Palindromic Substring
+       -> Manacher’s Algorithm (o(n)) solution.
+    3. Count of Palindromic Substring
+    4. Minimum deletions in a string to make it palindrome
+      1. Minimum insertions in a string to make it a palindrome
+      2. Find if a string is K-Palindromic
+    5. Palindromic Partitioning
+        (First compute the substring palindrome dp and then choose number of min cuts required)
+    6. Longest Common Subsequence
+    7. Longest Common Substring
+    8. Minimum Deletions & Insertions to transform a string into another.
+    9. Longest increasing subsequence
+    
+     
