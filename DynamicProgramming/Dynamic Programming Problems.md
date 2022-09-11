@@ -38,5 +38,10 @@ Dynamic Programming Problems Md
     7. Longest Common Substring
     8. Minimum Deletions & Insertions to transform a string into another.
     9. Longest increasing subsequence
+    10. Maximum Sum Increasing subsequence
+    11. Shortest Common Super-sequence
+    12. Minimum Deletions to make a sequence sorted.
+    13. Longest Repeating subsequence
+    14. Subsequence Pattern Matching
     
      
