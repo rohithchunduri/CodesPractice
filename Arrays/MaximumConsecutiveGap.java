@@ -12,18 +12,16 @@ class Solution {
         if (maxVal == minVal)
             return 0;
         
-        int gap = Math.max(((int)Math.ceil((maxVal-minVal)/(nums.length - 1))), 1);
+        int gap = Math.max(((int)Math.floor((maxVal-minVal)/(nums.length - 1))), 1);
         if (gap == 0)
             return 0;
         
-        System.out.println(gap);
         int buckets = (int)Math.ceil((maxVal - minVal)/(gap));
         int bucketsArr[] = new int[(buckets + 1)*2];
         Arrays.fill(bucketsArr, Integer.MIN_VALUE);
 
         for (int i = 0; i < nums.length; i++) {
             int bucketIdx = (nums[i] - minVal)/gap;
-            System.out.println(bucketIdx);
 
             int minBucketVal = bucketsArr[bucketIdx*2];
             int maxBucketVal = bucketsArr[bucketIdx*2 + 1];
